@@ -16,6 +16,7 @@
   "author": "Teo Gefors",
   "license": "MIT",
   "dependencies": {
+    "testing-with-jest": "file:",
     "underscore": "^1.13.7"
   },
   "devDependencies": {
