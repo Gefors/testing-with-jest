@@ -14,5 +14,8 @@
     "url": "(http.//github.com/Gefors/testing-with-jest)"
   },
   "author": "Teo Gefors",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "^1.13.7"
+  }
 }
