@@ -137,4 +137,5 @@ out
 
 /dist/
 
-/geckodriver-v0.34.0-win32/
+.info
+C:\Users\Teo\projekt\testing-with-jest\geckodriver.exe
