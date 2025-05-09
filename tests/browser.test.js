@@ -1,17 +1,30 @@
 const { Builder, By, until } = require('selenium-webdriver');
 require('geckodriver');
+let webdriver = require('selenium-webdriver');
 
-const fileUnderTest = 'file://' + __dirname.replace(/ /g, '%20') + '/../dist/index.html';
+// Här anger vi var testfilen ska hämtas. De konstiga replaceAll-funktionerna ersätter
+// mellanslag med URL-säkra '%20' och backslash (\) på Windows med slash (/).
+const fileUnderTest = 'file://' + __dirname.replaceAll(/ /g, '%20').replaceAll(/\\/g, '/') + '/../dist/index.html';
 const defaultTimeout = 10000;
 let driver;
 jest.setTimeout(1000 * 60 * 5); // 5 minuter
 
-// Det här körs innan vi kör testerna för att säkerställa att Firefox är igång
+// Med Chrome
+// Av någon anledning fungerade det inte med firefox för mig :/
+beforeAll(async () => {
+console.log(fileUnderTest);
+    driver = await new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();
+    await driver.get(fileUnderTest);
+});
+
+// Med firefox
+/*
 beforeAll(async () => {
 console.log(fileUnderTest);
     driver = await new Builder().forBrowser('firefox').build();
     await driver.get(fileUnderTest);
 });
+*/ 
 
 // Allra sist avslutar vi Firefox igen
 afterAll(async() => {
@@ -31,4 +44,21 @@ describe('Clicking "Pusha till stacken"', () => {
         await alert.sendKeys("Bananer");
         await alert.accept();
     });
+});
+
+// Eget test
+test('Clicking "Poppa stacken!" removes the top element', async () => {
+    let push = await driver.findElement(By.id('push'));
+    await push.click();
+    let alert = await driver.switchTo().alert();
+    await alert.sendKeys("Test");
+    await alert.accept();
+
+    // Pop the value from the stack
+    let pop = await driver.findElement(By.id('pop'));
+    await pop.click();
+    alert = await driver.switchTo().alert();
+    let alertText = await alert.getText();
+    expect(alertText).toEqual("n/a");
+    await alert.accept();
 });
