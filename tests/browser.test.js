@@ -59,6 +59,6 @@ test('Clicking "Poppa stacken!" removes the top element', async () => {
     await pop.click();
     alert = await driver.switchTo().alert();
     let alertText = await alert.getText();
-    expect(alertText).toEqual("n/a");
+    expect(alertText).toEqual("Tog bort Test");
     await alert.accept();
 });
